@@ -1,0 +1,49 @@
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : top
+Version: Q-2019.12-SP5-2
+Date   : Sat Jun 11 17:58:15 2022
+****************************************
+
+
+Library(s) Used:
+
+    tt_1v8_25c (File: /data3/course_lib_umc18/synopsys/tt_1v8_25c.db)
+
+
+Operating Conditions: tt_1v8_25c   Library: tt_1v8_25c
+Wire Load Model Mode: top
+
+
+Global Operating Voltage = 1.8  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+  Cell Internal Power  =  40.6833 mW   (96%)
+  Net Switching Power  =   1.5868 mW    (4%)
+                         ---------
+Total Dynamic Power    =  42.2700 mW  (100%)
+
+Cell Leakage Power     = 553.2062 nW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network  1.1926e-02            0.9394           26.9579            0.9514  (   2.25%)
+register          40.3220        9.3526e-02        3.1198e+05           40.4158  (  95.61%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational      0.3493            0.5538        2.4120e+05            0.9034  (   2.14%)
+--------------------------------------------------------------------------------------------------
+Total             40.6833 mW         1.5868 mW     5.5321e+05 pW        42.2706 mW
+1

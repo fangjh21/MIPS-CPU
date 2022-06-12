@@ -1,0 +1,110 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : top
+Version: Q-2019.12-SP5-2
+Date   : Sat Jun 11 17:58:15 2022
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: tt_1v8_25c   Library: tt_1v8_25c
+Wire Load Model Mode: top
+
+  Startpoint: registers_uut/data_reg[29][20]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: DFFPC/dataout_reg[6]
+            (rising edge-triggered flip-flop clocked by clk')
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  registers_uut/data_reg[29][20]/CK (DFFRHQX1)            0.00 #     0.00 r
+  registers_uut/data_reg[29][20]/Q (DFFRHQX1)             0.18       0.18 f
+  registers_uut/U2943/Y (AOI22XL)                         0.13       0.32 r
+  registers_uut/U2944/Y (NAND2XL)                         0.05       0.36 f
+  registers_uut/U2948/Y (NAND4BBX2)                       0.12       0.48 f
+  registers_uut/U2949/Y (NOR2X2)                          0.08       0.56 r
+  registers_uut/U2956/Y (NAND2X2)                         0.04       0.60 f
+  registers_uut/rDout1[20] (Registers)                    0.00       0.60 f
+  U3833/Y (AOI21X2)                                       0.13       0.73 r
+  U2031/Y (AOI22X2)                                       0.09       0.82 f
+  U2030/Y (NAND4X2)                                       0.14       0.97 r
+  U2029/Y (NOR3X2)                                        0.06       1.03 f
+  U2028/Y (AOI2BB2X4)                                     0.13       1.16 f
+  U2055/Y (NAND4X4)                                       0.12       1.28 r
+  U4128/Y (MXI2X4)                                        0.11       1.39 f
+  U4203/Y (NOR2X4)                                        0.09       1.48 r
+  U4209/Y (NOR2X4)                                        0.05       1.52 f
+  U4210/Y (BUFX20)                                        0.11       1.63 f
+  U4371/Y (AOI22X1)                                       0.11       1.74 r
+  U1756/Y (NAND4XL)                                       0.06       1.80 f
+  DFFPC/dataout_reg[6]/D (DFFHQX4)                        0.00       1.80 f
+  data arrival time                                                  1.80
+
+  clock clk' (rise edge)                                  2.00       2.00
+  clock network delay (ideal)                             0.00       2.00
+  clock uncertainty                                       0.00       2.00
+  DFFPC/dataout_reg[6]/CK (DFFHQX4)                       0.00       2.00 r
+  library setup time                                     -0.20       1.80
+  data required time                                                 1.80
+  --------------------------------------------------------------------------
+  data required time                                                 1.80
+  data arrival time                                                 -1.80
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -max_paths 1
+Design : top
+Version: Q-2019.12-SP5-2
+Date   : Sat Jun 11 17:58:15 2022
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: tt_1v8_25c   Library: tt_1v8_25c
+Wire Load Model Mode: top
+
+  Startpoint: IDEX/dff22/dataout_reg[0]
+              (rising edge-triggered flip-flop clocked by clk')
+  Endpoint: EXMEM/dff16/dataout_reg[0]
+            (rising edge-triggered flip-flop clocked by clk')
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk' (rise edge)                                  2.00       2.00
+  clock network delay (ideal)                             0.00       2.00
+  IDEX/dff22/dataout_reg[0]/CK (DFFHQX1)                  0.00       2.00 r
+  IDEX/dff22/dataout_reg[0]/Q (DFFHQX1)                   0.18       2.18 r
+  EXMEM/dff16/dataout_reg[0]/D (DFFTRX1)                  0.00       2.18 r
+  data arrival time                                                  2.18
+
+  clock clk' (rise edge)                                  2.00       2.00
+  clock network delay (ideal)                             0.00       2.00
+  clock uncertainty                                       0.00       2.00
+  EXMEM/dff16/dataout_reg[0]/CK (DFFTRX1)                 0.00       2.00 r
+  library hold time                                      -0.08       1.93
+  data required time                                                 1.93
+  --------------------------------------------------------------------------
+  data required time                                                 1.93
+  data arrival time                                                 -2.18
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.25
+
+
+1

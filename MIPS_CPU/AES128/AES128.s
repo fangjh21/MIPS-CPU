@@ -1,0 +1,269 @@
+.data
+input_files: .word 0x3243f6a8,0x885a308d,0x313198a2,0xe0370734,0x2b7e1516,0x28aed2a6,0xabf71588,0x09cf4f3c,0x637c777b,0xf26b6fc5,0x3001672b,0xfed7ab76,0xca82c97d,0xfa5947f0,0xadd4a2af,0x9ca472c0,0xb7fd9326,0x363ff7cc,0x34a5e5f1,0x71d83115,0x04c723c3,0x1896059a,0x071280e2,0xeb27b275,0x09832c1a,0x1b6e5aa0,0x523bd6b3,0x29e32f84,0x53d100ed,0x20fcb15b,0x6acbbe39,0x4a4c58cf,0xd0efaafb,0x434d3385,0x45f9027f,0x503c9fa8,0x51a3408f,0x929d38f5,0xbcb6da21,0x10fff3d2,0xcd0c13ec,0x5f974417,0xc4a77e3d,0x645d1973,0x60814fdc,0x222a9088,0x46eeb814,0xde5e0bdb,0xe0323a0a,0x4906245c,0xc2d3ac62,0x9195e479,0xe7c8376d,0x8dd54ea9,0x6c56f4ea,0x657aae08,0xba78252e,0x1ca6b4c6,0xe8dd741f,0x4bbd8b8a,0x703eb566,0x4803f60e,0x613557b9,0x86c11d9e,0xe1f89811,0x69d98e94,0x9b1e87e9,0xce5528df,0x8ca1890d,0xbfe64268,0x41992d0f,0xb054bb16,0x01000000,0x02000000,0x04000000,0x08000000,0x10000000,0x20000000,0x40000000,0x80000000,0x1b000000,0x36000000
+.text
+la $s0,input_files
+Main:
+v1:lw $s1,0($s0)
+v2:lw $s2,4($s0)
+v3:lw $s3,8($s0)
+v4:lw $s4,12($s0)
+addi $v1,$zero,0004
+AES128:lw $t1,16($s0)
+v6:lw $t2,20($s0)
+v7:lw $t3,24($s0)
+v8:lw $t4,28($s0)
+AddRoundKey:xor $s1,$t1,$s1#define xor command in the project 
+v10:xor $s2,$t2,$s2
+v11:xor $s3,$t3,$s3
+v12:xor $s4,$t4,$s4
+ori $v0,$zero,44
+beq $v1,$v0,end
+l1:or $a3,$s1,$s1
+j Subwords
+l11:or $s1,$a3,$a3
+l2:or $a3,$s2,$s2
+j Subwords
+l22:or $s2,$a3,$a3
+l3:or $a3,$s3,$s3
+j Subwords
+l33:or $s3,$a3,$a3
+l4:or $a3,$s4,$s4
+Subwords:
+or $t8,$a3,$a3
+ori $a1,$zero,0005
+add $a2,$zero,0001
+Subword:
+andi $t5,$a3,252#0x00fc
+v14:andi $t6,$a3,0003
+v15:add $t5, $s0, $t5
+v16:lw $a0,32($t5)
+v17:beq $t6,$zero,v20
+addi $t7,$zero,0001
+beq $t6,$t7,v19
+addi $t7,$t7,0001
+beq $t6,$t7,v18
+j v21	
+v18:srl $a0,$a0,8
+j v21
+v19:srl $a0,$a0,16
+j v21
+v20:srl $a0,$a0,24
+v21:andi $a0,$a0,255
+sll $a0,$a0,24
+srl $a3,$a3,8
+add $a3,$a3,$a0
+add $a2,$a2,0001
+bne $a1,$a2,Subword 
+beq  $t8,$s1,l11
+beq  $t8,$s2,l22
+beq  $t8,$s3,l33
+endsubwords:or $s4,$a3,$a3
+ShiftRows: 
+lui $a0,255#00ff0000
+lui $a1,65280#ff000000
+ori $a2,$zero,255#000000ff
+ori $a3,$zero,,65280#0000ff00
+or $t5,$a1,$a3 #ffffff00
+or $t5,$t5,$a0
+and $t0,$s1,$t5#
+and $t7,$s4,$a2#
+and $t8,$s1,$a2#
+or $t6,$t7,$t0#拼凑
+or $s1,$t6,$t6#
+and $t0,$s2,$t5#
+and $t7,$s2,$a2#
+or $t6,$t8,$t0#拼凑
+or $s2,$t6,$t6#
+and $t0,$s3,$t5#
+and $t8,$s3,$a2#
+or $t6,$t7,$t0#拼凑
+or $s3,$t6,$t6#
+and $t0,$s4,$t5#
+and $t7,$s4,$a2#
+or $t6,$t8,$t0#拼凑
+or $s4,$t6,$t6#
+or $t5,$a1,$a2 
+or $t5,$t5,$a0#ffff00ff
+and $t0,$s1,$t5#
+and $t7,$s3,$a3#
+and $t8,$s1,$a3#
+or $t6,$t7,$t0#拼凑
+or $s1,$t6,$t6#
+and $t0,$s3,$t5#
+or $t6,$t8,$t0#拼凑
+or $s3,$t6,$t6#
+and $t0,$s2,$t5#
+and $t8,$s2,$a3#
+and $t7,$s4,$a3#
+or $t6,$t7,$t0#拼凑
+or $s2,$t6,$t6#
+and $t0,$s4,$t5#
+or $t6,$t8,$t0#拼凑
+or $s4,$t6,$t6#
+or $t5,$a1,$a2 
+or $t5,$t5,$a3 #ff00ffff
+and $t0,$s1,$t5#
+and $t7,$s2,$a0#
+and $t8,$s1,$a0#
+or $t6,$t7,$t0#拼凑
+or $s1,$t6,$t6#
+and $t0,$s2,$t5#
+and $t7,$s3,$a0#
+or $t6,$t7,$t0#拼凑
+or $s2,$t6,$t6#
+and $t0,$s3,$t5#
+and $t7,$s4,$a0#
+or $t6,$t7,$t0#拼凑
+or $s3,$t6,$t6#
+and $t0,$s4,$t5#
+#and $t7,$s4,$a0#
+or $t6,$t8,$t0#拼凑
+or $s4,$t6,$t6#
+ori $v0,$zero,40
+beq $v1,$v0,KeyExpansions
+MixColumns:or $t0,$s1,$s1
+or $a0,$s1,$s1
+j MixColumn
+M2:or $t0,$s2,$s2
+or $s1,$a0,$a0
+or $a0,$s2,$s2
+j MixColumn
+M3:or $t0,$s3,$s3
+or $s2,$a0,$a0
+or $a0,$s3,$s3
+j MixColumn
+M4:or $t0,$s4,$s4
+or $s3,$a0,$a0
+or $a0,$s4,$s4
+MixColumn:
+or $a3,$a0,$a0
+andi $t5,$t0,255
+srl $t0,$t0,8
+or $t1,$t5,$t5
+or $t2,$t5,$t5
+andi $t8,$t5,128
+sll $t5,$t5,0001
+andi  $t5,$t5,254
+beq $t8,$zero,zero31
+zero21:xori $t5,$t5,27
+zero31:
+xor $t4,$zero,$t5
+xor $t3,$t1,$t5
+andi $t5,$t0,255
+srl $t0,$t0,8
+or $a1,$t5,$t5
+xor $t4,$t4,$t5
+xor $t1,$t1,$t5
+andi $t8,$t5,128
+sll $t5,$t5,0001
+andi  $t5,$t5,254
+beq $t8,$zero,zero32
+zero22:xori $t5,$t5,27
+zero32:
+xor $t3,$t3,$t5
+xor $a1,$a1,$t5
+xor $t2,$t2,$a1
+andi $t5,$t0,255
+srl $t0,$t0,8
+or $a1,$t5,$t5
+xor $t3,$t3,$t5
+xor $t4,$t4,$t5
+andi $t8,$t5,128
+sll $t5,$t5,0001
+andi  $t5,$t5,254
+beq $t8,$zero,zero33
+zero23:xori $t5,$t5,27
+zero33:
+xor $t2,$t2,$t5
+xor $a1,$a1,$t5
+xor $t1,$t1,$a1
+andi $t5,$t0,255
+or $a1,$t5,$t5
+xor $t2,$t2,$t5
+xor $t3,$t3,$t5
+andi $t8,$t5,128
+sll $t5,$t5,0001
+andi  $t5,$t5,254
+beq $t8,$zero,zero34
+zero24:xori $t5,$t5,27
+zero34:
+xor $t1,$t1,$t5
+xor $a1,$a1,$t5
+xor $t4,$t4,$a1
+sll $t1,$t1,24
+sll $t2,$t2,16
+sll $t3,$t3,8
+add $t1,$t1,$t2
+add $t3,$t3,$t4
+add $a0,$t1,$t3
+beq  $a3,$s1,M2
+beq  $a3,$s2,M3
+beq  $a3,$s3,M4
+or $s4,$a0,$a0
+KeyExpansions:
+lw $t1,16($s0)
+lw $t2,20($s0)
+lw $t3,24($s0)
+lw $t4,28($s0)
+or $t0,$zero,$t4 #temp=w[i-1]
+or $t8,$zero,$t1
+j KeyExpansion
+cycle2:or $t8,$zero,$t2
+sw $t0,16($s0)
+j KeyExpansion
+cycle3:or $t8,$zero,$t3
+sw $t0,20($s0)
+j KeyExpansion
+cycle4:or $t8,$zero,$t4
+sw $t0,24($s0)
+KeyExpansion:
+andi $t5,$v1,3
+bne	$t5,$zero,next
+Rotword:
+lui $t5,65280#ff000000
+and $t6,$t0,$t5
+sll $t0,$t0,8
+srl $t6,$t6,24
+add $t0,$t0,$t6 
+SubByte:
+or $a3,$t0,$t0
+ori $a1,$zero,0005
+add $a2,$zero,0001
+Sd:
+andi $t5,$a3,252#0x00fc
+andi $t6,$a3,0003
+add $t5, $s0, $t5
+lw $a0,32($t5)
+beq $t6,$zero,vv20
+addi $t7,$zero,0001
+beq $t6,$t7,vv19
+addi $t7,$t7,0001
+beq $t6,$t7,vv18
+j vv21	
+vv18:srl $a0,$a0,8
+j vv21
+vv19:srl $a0,$a0,16
+j vv21
+vv20:srl $a0,$a0,24
+vv21:andi $a0,$a0,255
+sll $a0,$a0,24
+srl $a3,$a3,8
+add $a3,$a3,$a0
+add $a2,$a2,0001
+bne $a1,$a2,Sd
+endsubbyte:or $t0,$a3,$a3
+Rcon:
+add $t9,$s0,$v1
+lw $a1,284($t9)
+xor $t0,$t0,$a1
+next:xor $t0,$t0,$t8
+addi $v1,$v1,0001
+beq $t8,$t1,cycle2
+beq $t8,$t2,cycle3
+beq $t8,$t3,cycle4
+sw $t0,28($s0)
+ori $v0,$zero,44
+j AES128
+end:ori $t0,$zero,0000
+
+
